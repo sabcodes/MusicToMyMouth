@@ -25,7 +25,7 @@ MusicToMyMouth has its own source folder, build outputs, plugin identity, and Au
 
 ARA2 offers direct access to host audio regions and tighter synchronization. Current Antares Logic support documentation requires Logic to run in Rosetta on Apple Silicon for its ARA mode. A standard native AU can also offer manual pitch and timing editing through an explicit playback-transfer/capture workflow, as documented by Celemony. Manual editing does not inherently require ARA2.
 
-The user has requested an explanation of these workflows before selecting the integration approach. Keep both automatic tuning and manual pitch/timing editing in scope.
+Decision: use native Logic with a standard AU and Capture in v1. Insert MusicToMyMouth on the clean vocal track, arm Capture, and play the required section once. Captured audio is analyzed for manual note pitch and timing editing. Downloaded stems work the same way. Edited audio replaces the captured section at its original host timeline position. ARA2 is deferred. Capture media and edits must survive project save/reopen. Moving or replacing the source region requires recapture.
 
 ## Research sources
 

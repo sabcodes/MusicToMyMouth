@@ -6,7 +6,7 @@ MusicToMyMouth processes clean, isolated, prerecorded vocal tracks. It combines 
 
 ## Project status
 
-The first milestone records the agreed product specification. Plugin implementation has not started. See [SPEC.md](SPEC.md) for scope, research sources, and the open manual-editor integration decision.
+The first milestone records the agreed product specification. Plugin implementation has not started. See [SPEC.md](SPEC.md) for scope, research sources, and the approved native Logic Capture workflow.
 
 ## Planned capabilities
 
@@ -22,7 +22,7 @@ Harmonies and doubling are backlog items. Comping and audio cleanup are handled 
 
 Major milestones must be committed and pushed to the GitHub repository after the appropriate checks. Commit messages should identify the completed capability, and milestone notes should describe validation and any remaining limitations. Do not present unverified sound quality as established.
 
-Planned milestones include the AU host foundation, automatic tuning, configurable vocal effects, presets and controls, manual note editing, and Logic integration and audio quality validation. The editor integration approach is still open; both automatic correction and manual pitch/timing editing remain in the agreed scope.
+Planned milestones include the AU host foundation, automatic tuning, configurable vocal effects, presets and controls, manual note editing, and Logic integration and audio quality validation. The editor uses Capture: arm it and play the vocal section once in native Logic, then edit pitch and timing. Downloaded vocal stems are supported.
 
 ## Project boundaries
 
