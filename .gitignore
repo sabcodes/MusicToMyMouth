@@ -1,0 +1,8 @@
+.DS_Store
+/build/
+/build-*/
+/cmake-build-*/
+/_deps/
+/captures/
+/rendered/
+/user-presets/
