@@ -20,7 +20,7 @@ PitchReading YinDetector::detect() {
     for(int lag=1;lag<=maxLag;++lag) {
         double d=0;
         for(int i=0;i<512;++i) { double x = frame[size_t(i)] - frame[size_t(i+lag)]; d += x*x; }
-        running += d; diff[size_t(lag)] = running > 0 ? float(d*lag/running) : 1;
+        rawDiff[size_t(lag)] = float(d);running += d; diff[size_t(lag)] = running > 0 ? float(d*lag/running) : 1;
     }
     int best = -1;
     for(int lag=minLag;lag<maxLag;++lag) if(diff[size_t(lag)]<.15f) {
@@ -28,10 +28,12 @@ PitchReading YinDetector::detect() {
         best=lag; break;
     }
     if(best<0) return {};
-    double a=diff[size_t(best-1)], b=diff[size_t(best)], c=diff[size_t(best+1)];
+    // Use the normalized curve to select the trough, then the raw difference
+    // to refine its period without the normalization slope bias.
+    double a=rawDiff[size_t(best-1)], b=rawDiff[size_t(best)], c=rawDiff[size_t(best+1)];
     double lag = best + (std::abs(a-2*b+c)>1e-9 ? .5*(a-c)/(a-2*b+c) : 0);
     double hz = rate/lag;
-    return {69+12*std::log2(hz/440), 1-b, hz>=65 && hz<=1100};
+    return {69+12*std::log2(hz/440), 1-diff[size_t(best)], hz>=65 && hz<=1100};
 }
 double nearestNote(double midi, int key, int scale) {
     static const std::vector<std::vector<int>> scales {{0,1,2,3,4,5,6,7,8,9,10,11},{0,2,4,5,7,9,11},{0,2,3,5,7,8,10},{0,2,3,5,7,8,11},{0,2,4,7,9},{0,3,5,7,10}};
@@ -42,15 +44,54 @@ double nearestNote(double midi, int key, int scale) {
         if(std::find(notes.begin(),notes.end(),pc)!=notes.end() && std::abs(n-midi)<distance) { best=n; distance=std::abs(n-midi); }
     } return best;
 }
-void PitchEngine::prepare(double sr,int channels) {
-    sampleRate=sr; detector.prepare(sr);
-    using R=RubberBand::RubberBandLiveShifter;
-    shifter=std::make_unique<R>(size_t(sr),size_t(channels),R::OptionWindowMedium|R::OptionFormantPreserved|R::OptionChannelsTogether);
-    shifter->setDebugLevel(0); block=int(shifter->getBlockSize());
-    input.setSize(channels,block); output.setSize(channels,block);
-    delay=block+int(shifter->getStartDelay()); reset();
+void PitchEngine::Diagnostics::count(const char* message) {
+    // Library diagnostics stay allocation-free and do not write to stderr on the audio thread.
+    if (std::strstr(message, "ERROR")) ++errors;
+    else if (std::strstr(message, "WARNING")) ++warnings;
 }
-void PitchEngine::reset() { if(shifter)shifter->reset(); detector.reset(); input.clear();output.clear();cursor=0;shiftSemitones=0;detectedMidi=0;confidence=0;correctionCents=0; }
+void PitchEngine::prepare(double sr, int channels) {
+    sampleRate = sr;
+    detector.prepare(sr);
+    using R = RubberBand::RubberBandStretcher;
+    shifter = std::make_unique<R>(size_t(sr), size_t(channels), diagnostics,
+        R::OptionProcessRealTime | R::OptionEngineFiner | R::OptionChannelsTogether
+        | R::OptionPitchHighConsistency | R::OptionFormantPreserved | R::OptionThreadingNever);
+    shifter->setDebugLevel(0);
+    shifter->setMaxProcessSize(size_t(block));
+    // Output production varies across blocks even at time ratio 1. Keep a bounded
+    // reserve, report its delay to the host, and remove the engine's startup delay.
+    delay = int(shifter->getPreferredStartPad() + shifter->getStartDelay()) + block * 4;
+    input.setSize(channels, block);
+    staging.setSize(channels, block);
+    fifo.setSize(channels, delay * 4 + block * 16);
+    reset();
+}
+void PitchEngine::reset() {
+    if (!shifter) return;
+    shifter->reset();
+    detector.reset();input.clear();staging.clear();fifo.clear();
+    cursor = read = 0;write = delay;queued = delay;
+    discard = int(shifter->getStartDelay());shiftSemitones = 0;
+    detectedMidi = confidence = correctionCents = 0;
+    underruns = overflows = 0;diagnostics->errors = diagnostics->warnings = 0;
+    for (int pad = int(shifter->getPreferredStartPad()); pad > 0; pad -= block) {
+        shifter->process(input.getArrayOfReadPointers(), size_t(std::min(block, pad)), false);
+        drain();
+    }
+}
+void PitchEngine::drain() {
+    while (shifter->available() > 0) {
+        int count = int(shifter->retrieve(staging.getArrayOfWritePointers(),
+            size_t(std::min(block, shifter->available()))));
+        for (int i = 0; i < count; ++i) {
+            if (discard > 0) { --discard; continue; }
+            if (queued >= fifo.getNumSamples()) { ++overflows; continue; }
+            for (int ch = 0; ch < fifo.getNumChannels(); ++ch)
+                fifo.setSample(ch, write, staging.getSample(ch, i));
+            write = (write + 1) % fifo.getNumSamples();++queued;
+        }
+    }
+}
 void PitchEngine::process(juce::AudioBuffer<float>& buffer,const juce::AudioProcessorValueTreeState& params,const bool* manualMask) {
     if(!shifter) return;
     bool on=value(params,"tuneOn")>.5f;
@@ -63,8 +104,10 @@ void PitchEngine::process(juce::AudioBuffer<float>& buffer,const juce::AudioProc
         float mono=0;
         for(int ch=0;ch<buffer.getNumChannels();++ch) {
             float x=buffer.getSample(ch,i);mono+=x;
-            input.setSample(ch,cursor,x);buffer.setSample(ch,i,output.getSample(ch,cursor));
+            input.setSample(ch,cursor,x);buffer.setSample(ch,i,queued>0?fifo.getSample(ch,read):0.f);
         }
+        if (queued > 0) { read = (read + 1) % fifo.getNumSamples();--queued; }
+        else ++underruns;
         reading=detector.push(mono/float(buffer.getNumChannels()));
         if(++cursor==block) {
             double correction=0;
@@ -75,11 +118,11 @@ void PitchEngine::process(juce::AudioBuffer<float>& buffer,const juce::AudioProc
             }
             if(manualMask&&manualMask[i])shiftSemitones=0;else shiftSemitones+=alpha*(correction-shiftSemitones);
             shifter->setPitchScale(std::pow(2.,(shiftSemitones+value(params,"transpose"))/12.));
-            shifter->setFormantOption(value(params,"preserveFormant")>.5f ? RubberBand::RubberBandLiveShifter::OptionFormantPreserved : RubberBand::RubberBandLiveShifter::OptionFormantShifted);
+            shifter->setFormantOption(value(params,"preserveFormant")>.5f ? RubberBand::RubberBandStretcher::OptionFormantPreserved : RubberBand::RubberBandStretcher::OptionFormantShifted);
             auto formant=value(params,"formant");
             // Explicit envelope ratios are relative to the uncorrected envelope.
             shifter->setFormantScale(std::abs(formant)<.001f ? 0 : std::pow(2.,formant/12.)/shifter->getPitchScale());
-            shifter->shift(input.getArrayOfReadPointers(),output.getArrayOfWritePointers());cursor=0;
+            shifter->process(input.getArrayOfReadPointers(),size_t(block),false);drain();cursor=0;
             detectedMidi.store(reading.voiced?float(reading.midi):0);
             confidence.store(float(reading.confidence));correctionCents.store(float(shiftSemitones*100));
         }

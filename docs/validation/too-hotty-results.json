@@ -1,0 +1,550 @@
+{
+  "source": {
+    "file": "Too Hotty vocals.mp3",
+    "sampleRate": 44100,
+    "channels": 2,
+    "durationSeconds": 297.0290022675737
+  },
+  "auValidation": "succeeded",
+  "distinctCheckCount": 76,
+  "failures": 0,
+  "testedSourceSha256": {
+    "Source/DSP/Pitch.cpp": "d12c121e1daf83f1b973a4d199522b6fb81df95d573b857790cdd52e66f16747",
+    "Source/DSP/Pitch.h": "219940a74082f7aa8d91f4d27b5865fbecd75c32dd1a9c6ed3812f6ea7019a5e",
+    "Source/DSP/VocalChain.cpp": "39d88b7363edb62772eba0627dfde960cdd332b2633d9949014370eb26673555",
+    "Source/DSP/VocalChain.h": "1ab7f4b7674c96d66f0a9180ef9d8cd923552f8d902e87318a1d0fcec29c5380",
+    "Source/PluginProcessor.cpp": "33a02bc9aba177f0bd6f75e726f632c3e62ad038969cf1e0dcdfc37a38dfa984",
+    "Source/PluginProcessor.h": "11e4a789d4523239a3c772d3cb4b039d694f1b28fc2fcfaa5d550bd69bb8c95a",
+    "Source/Model/Capture.cpp": "0aca12ca2efbe5be3df5465955c00750ab359b36ec89720f03c708ac4a35aac4",
+    "Source/Model/Capture.h": "81cd8454c4af9e13fd5b063fe5d6560eee1f504a6340386422adc0e0483991f9",
+    "Source/Parameters.cpp": "210cef61a80a00c7a40fc763990d1dedb865e156697bbbf33912156392c2542c"
+  },
+  "checks": [
+    {
+      "name": "dry latency 44100Hz / 1ch / 64",
+      "pass": true,
+      "details": 0.0
+    },
+    {
+      "name": "dry latency 44100Hz / 1ch / 137",
+      "pass": true,
+      "details": 0.0
+    },
+    {
+      "name": "dry latency 44100Hz / 1ch / 512",
+      "pass": true,
+      "details": 0.0
+    },
+    {
+      "name": "dry latency 44100Hz / 1ch / 4096",
+      "pass": true,
+      "details": 0.0
+    },
+    {
+      "name": "dry latency 44100Hz / 2ch / 64",
+      "pass": true,
+      "details": 0.0
+    },
+    {
+      "name": "dry latency 44100Hz / 2ch / 137",
+      "pass": true,
+      "details": 0.0
+    },
+    {
+      "name": "dry latency 44100Hz / 2ch / 512",
+      "pass": true,
+      "details": 0.0
+    },
+    {
+      "name": "dry latency 44100Hz / 2ch / 4096",
+      "pass": true,
+      "details": 0.0
+    },
+    {
+      "name": "dry latency 48000Hz / 1ch / 64",
+      "pass": true,
+      "details": 0.0
+    },
+    {
+      "name": "dry latency 48000Hz / 1ch / 137",
+      "pass": true,
+      "details": 0.0
+    },
+    {
+      "name": "dry latency 48000Hz / 1ch / 512",
+      "pass": true,
+      "details": 0.0
+    },
+    {
+      "name": "dry latency 48000Hz / 1ch / 4096",
+      "pass": true,
+      "details": 0.0
+    },
+    {
+      "name": "dry latency 48000Hz / 2ch / 64",
+      "pass": true,
+      "details": 0.0
+    },
+    {
+      "name": "dry latency 48000Hz / 2ch / 137",
+      "pass": true,
+      "details": 0.0
+    },
+    {
+      "name": "dry latency 48000Hz / 2ch / 512",
+      "pass": true,
+      "details": 0.0
+    },
+    {
+      "name": "dry latency 48000Hz / 2ch / 4096",
+      "pass": true,
+      "details": 0.0
+    },
+    {
+      "name": "dry latency 96000Hz / 1ch / 64",
+      "pass": true,
+      "details": 0.0
+    },
+    {
+      "name": "dry latency 96000Hz / 1ch / 137",
+      "pass": true,
+      "details": 0.0
+    },
+    {
+      "name": "dry latency 96000Hz / 1ch / 512",
+      "pass": true,
+      "details": 0.0
+    },
+    {
+      "name": "dry latency 96000Hz / 1ch / 4096",
+      "pass": true,
+      "details": 0.0
+    },
+    {
+      "name": "dry latency 96000Hz / 2ch / 64",
+      "pass": true,
+      "details": 0.0
+    },
+    {
+      "name": "dry latency 96000Hz / 2ch / 137",
+      "pass": true,
+      "details": 0.0
+    },
+    {
+      "name": "dry latency 96000Hz / 2ch / 512",
+      "pass": true,
+      "details": 0.0
+    },
+    {
+      "name": "dry latency 96000Hz / 2ch / 4096",
+      "pass": true,
+      "details": 0.0
+    },
+    {
+      "name": "hard correction 44100Hz / MIDI 45.37",
+      "pass": true,
+      "details": 0.006457143124689
+    },
+    {
+      "name": "hard correction 44100Hz / MIDI 57.37",
+      "pass": true,
+      "details": -0.003104728530861
+    },
+    {
+      "name": "hard correction 44100Hz / MIDI 69.37",
+      "pass": true,
+      "details": 0.043983669225333
+    },
+    {
+      "name": "hard correction 44100Hz / MIDI 81.37",
+      "pass": true,
+      "details": -0.074981609542121
+    },
+    {
+      "name": "hard correction 48000Hz / MIDI 45.37",
+      "pass": true,
+      "details": 0.000519210719927
+    },
+    {
+      "name": "hard correction 48000Hz / MIDI 57.37",
+      "pass": true,
+      "details": -0.006756865816886
+    },
+    {
+      "name": "hard correction 48000Hz / MIDI 69.37",
+      "pass": true,
+      "details": 0.030749882531675
+    },
+    {
+      "name": "hard correction 48000Hz / MIDI 81.37",
+      "pass": true,
+      "details": -0.504360620509125
+    },
+    {
+      "name": "hard correction 96000Hz / MIDI 45.37",
+      "pass": true,
+      "details": 0.000216199383987
+    },
+    {
+      "name": "hard correction 96000Hz / MIDI 57.37",
+      "pass": true,
+      "details": -0.006139548756221
+    },
+    {
+      "name": "hard correction 96000Hz / MIDI 69.37",
+      "pass": true,
+      "details": 0.058883997441447
+    },
+    {
+      "name": "hard correction 96000Hz / MIDI 81.37",
+      "pass": true,
+      "details": -0.433013852538798
+    },
+    {
+      "name": "transpose -12",
+      "pass": true,
+      "details": 0.134284121856406
+    },
+    {
+      "name": "transpose -3",
+      "pass": true,
+      "details": -0.045485419036728
+    },
+    {
+      "name": "transpose 3",
+      "pass": true,
+      "details": 0.005346685305267
+    },
+    {
+      "name": "transpose 12",
+      "pass": true,
+      "details": -0.057915666233152
+    },
+    {
+      "name": "host bypass preserves latency",
+      "pass": true,
+      "details": 0.0
+    },
+    {
+      "name": "unity wet impulse matches reported latency",
+      "pass": true,
+      "details": 1
+    },
+    {
+      "name": "unity streaming stays finite without underruns",
+      "pass": true,
+      "details": null
+    },
+    {
+      "name": "scale quantization at octave boundaries",
+      "pass": true,
+      "details": null
+    },
+    {
+      "name": "stem input",
+      "pass": true,
+      "details": {
+        "startSeconds": 78.0,
+        "durationSeconds": 12.0,
+        "sampleRate": 44100.0,
+        "peak": 0.714400887489319,
+        "rms": 0.111309013936576
+      }
+    },
+    {
+      "name": "vocal preset Natural / Studio lead",
+      "pass": true,
+      "details": {
+        "peak": 0.83926123380661,
+        "rms": 0.100046177813606,
+        "renderSeconds": 1.919685333,
+        "realtimeRatio": 0.15997377775,
+        "latencySamples": 6148,
+        "engineErrors": 0,
+        "engineWarnings": 0,
+        "underruns": 0,
+        "overflows": 0
+      }
+    },
+    {
+      "name": "vocal preset Natural / Intimate",
+      "pass": true,
+      "details": {
+        "peak": 0.939080774784088,
+        "rms": 0.113228717967972,
+        "renderSeconds": 2.027583333,
+        "realtimeRatio": 0.16896527775,
+        "latencySamples": 6148,
+        "engineErrors": 0,
+        "engineWarnings": 0,
+        "underruns": 0,
+        "overflows": 0
+      }
+    },
+    {
+      "name": "vocal preset Natural / Pop shine",
+      "pass": true,
+      "details": {
+        "peak": 0.824678480625153,
+        "rms": 0.101727974047067,
+        "renderSeconds": 1.630206166,
+        "realtimeRatio": 0.135850513833333,
+        "latencySamples": 6148,
+        "engineErrors": 0,
+        "engineWarnings": 0,
+        "underruns": 0,
+        "overflows": 0
+      }
+    },
+    {
+      "name": "vocal preset Hard tune / Modern lead",
+      "pass": true,
+      "details": {
+        "peak": 0.705827414989471,
+        "rms": 0.085499644761883,
+        "renderSeconds": 1.315552583,
+        "realtimeRatio": 0.109629381916667,
+        "latencySamples": 6148,
+        "engineErrors": 0,
+        "engineWarnings": 0,
+        "underruns": 0,
+        "overflows": 0
+      }
+    },
+    {
+      "name": "vocal preset Hard tune / Instant snap",
+      "pass": true,
+      "details": {
+        "peak": 0.782926321029663,
+        "rms": 0.113359856895569,
+        "renderSeconds": 1.101165791,
+        "realtimeRatio": 0.091763815916667,
+        "latencySamples": 6148,
+        "engineErrors": 0,
+        "engineWarnings": 0,
+        "underruns": 0,
+        "overflows": 0
+      }
+    },
+    {
+      "name": "vocal preset Hard tune / Melodic space",
+      "pass": true,
+      "details": {
+        "peak": 0.658071935176849,
+        "rms": 0.099648973054331,
+        "renderSeconds": 1.566202916,
+        "realtimeRatio": 0.130516909666667,
+        "latencySamples": 6148,
+        "engineErrors": 0,
+        "engineWarnings": 0,
+        "underruns": 0,
+        "overflows": 0
+      }
+    },
+    {
+      "name": "vocal preset Robot / Deep formant",
+      "pass": true,
+      "details": {
+        "peak": 0.847274959087372,
+        "rms": 0.141209548334258,
+        "renderSeconds": 1.130524625,
+        "realtimeRatio": 0.094210385416667,
+        "latencySamples": 6148,
+        "engineErrors": 0,
+        "engineWarnings": 0,
+        "underruns": 0,
+        "overflows": 0
+      }
+    },
+    {
+      "name": "vocal preset Robot / Bright alien",
+      "pass": true,
+      "details": {
+        "peak": 0.525175869464874,
+        "rms": 0.078669172725711,
+        "renderSeconds": 1.280169916,
+        "realtimeRatio": 0.106680826333333,
+        "latencySamples": 6148,
+        "engineErrors": 0,
+        "engineWarnings": 0,
+        "underruns": 0,
+        "overflows": 0
+      }
+    },
+    {
+      "name": "vocal preset Robot / Telephone pulse",
+      "pass": true,
+      "details": {
+        "peak": 0.649606645107269,
+        "rms": 0.083659471267951,
+        "renderSeconds": 1.111639125,
+        "realtimeRatio": 0.09263659375,
+        "latencySamples": 6148,
+        "engineErrors": 0,
+        "engineWarnings": 0,
+        "underruns": 0,
+        "overflows": 0
+      }
+    },
+    {
+      "name": "vocal preset Space / Wide ambience",
+      "pass": true,
+      "details": {
+        "peak": 0.58946967124939,
+        "rms": 0.108257748730404,
+        "renderSeconds": 1.563962041,
+        "realtimeRatio": 0.130330170083333,
+        "latencySamples": 6148,
+        "engineErrors": 0,
+        "engineWarnings": 0,
+        "underruns": 0,
+        "overflows": 0
+      }
+    },
+    {
+      "name": "vocal preset Space / Slap lead",
+      "pass": true,
+      "details": {
+        "peak": 0.68078750371933,
+        "rms": 0.086310230407331,
+        "renderSeconds": 1.626483917,
+        "realtimeRatio": 0.135540326416667,
+        "latencySamples": 6148,
+        "engineErrors": 0,
+        "engineWarnings": 0,
+        "underruns": 0,
+        "overflows": 0
+      }
+    },
+    {
+      "name": "vocal preset Space / Dotted echoes",
+      "pass": true,
+      "details": {
+        "peak": 0.583658993244171,
+        "rms": 0.085859893783373,
+        "renderSeconds": 1.5872205,
+        "realtimeRatio": 0.132268375,
+        "latencySamples": 6148,
+        "engineErrors": 0,
+        "engineWarnings": 0,
+        "underruns": 0,
+        "overflows": 0
+      }
+    },
+    {
+      "name": "installed AU latency agrees with processor",
+      "pass": true,
+      "details": 6148
+    },
+    {
+      "name": "installed AU stem matches offline processor",
+      "pass": true,
+      "details": 0.0
+    },
+    {
+      "name": "sound preset and order recall",
+      "pass": true,
+      "details": null
+    },
+    {
+      "name": "sound presets preserve song and Capture settings",
+      "pass": true,
+      "details": null
+    },
+    {
+      "name": "full stem Natural / Studio lead",
+      "pass": true,
+      "details": {
+        "durationSeconds": 297.0290022675737,
+        "renderSeconds": 40.091252208,
+        "peak": 0.958287417888641,
+        "engineErrors": 0,
+        "engineWarnings": 0,
+        "underruns": 0,
+        "overflows": 0,
+        "callbackP99Ms": 2.543583,
+        "callbackDeadlineMs": 11.609977324263038
+      }
+    },
+    {
+      "name": "full stem callback p99 under 512-frame budget / Natural / Studio lead",
+      "pass": true,
+      "details": 2.543583
+    },
+    {
+      "name": "full stem Hard tune / Instant snap",
+      "pass": true,
+      "details": {
+        "durationSeconds": 297.0290022675737,
+        "renderSeconds": 26.537290917,
+        "peak": 0.947224855422974,
+        "engineErrors": 0,
+        "engineWarnings": 0,
+        "underruns": 0,
+        "overflows": 0,
+        "callbackP99Ms": 2.464417,
+        "callbackDeadlineMs": 11.609977324263038
+      }
+    },
+    {
+      "name": "full stem callback p99 under 512-frame budget / Hard tune / Instant snap",
+      "pass": true,
+      "details": 2.464417
+    },
+    {
+      "name": "Capture arm",
+      "pass": true,
+      "details": null
+    },
+    {
+      "name": "Capture analysis",
+      "pass": true,
+      "details": 23
+    },
+    {
+      "name": "manual pitch and duration render",
+      "pass": true,
+      "details": null
+    },
+    {
+      "name": "Capture project recall",
+      "pass": true,
+      "details": 4288429
+    },
+    {
+      "name": "Capture media round trip",
+      "pass": true,
+      "details": 0.0
+    },
+    {
+      "name": "recalled render across block sizes",
+      "pass": true,
+      "details": 0.0
+    },
+    {
+      "name": "stopped host does not replay Capture",
+      "pass": true,
+      "details": null
+    },
+    {
+      "name": "manual edit undo",
+      "pass": true,
+      "details": null
+    },
+    {
+      "name": "manual note +3 semitones measured pitch",
+      "pass": true,
+      "details": -0.020376288352635
+    },
+    {
+      "name": "manual duration contracts audio to edited span",
+      "pass": true,
+      "details": null
+    },
+    {
+      "name": "installed AU host bypass preserves raw audio timing",
+      "pass": true,
+      "details": 0.0
+    }
+  ]
+}

@@ -30,3 +30,9 @@ Remaining work before a production-quality claim:
 - No automated tests or AU/Logic validation were run in this milestone.
 
 This milestone provides a runnable development artifact and a foundation for quality work. It does not establish equivalence to Auto-Tune, Melodyne, Nectar, or other production tools.
+
+## Vocal validation and DSP fixes
+
+Tested the owner's Too Hotty vocal stem after testing was explicitly authorized. Added the optional offline validation runner, native AU test host, and reproducible local validation script. See [VOCAL-VALIDATION.md](VOCAL-VALIDATION.md) for scope, measurements, fixes, and outstanding Logic/listening checks. The recorded tests supersede the unvalidated items covered by that report; the original first-build notes above remain historical.
+
+The installed AU was rebuilt and locally signed. Major changes are buffered R3 streaming, host bypass delay preservation, and raw-difference YIN period refinement. Stem audio, captured media, listening clips, and generated machine reports stay in ignored local folders.

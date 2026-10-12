@@ -30,3 +30,14 @@ target_sources(MusicToMyMouth PRIVATE
 target_compile_definitions(MusicToMyMouth PUBLIC JUCE_WEB_BROWSER=0 JUCE_USE_CURL=0 JUCE_VST3_CAN_REPLACE_VST2=0)
 target_link_libraries(MusicToMyMouth PRIVATE mouth_pitch_engine juce::juce_audio_utils juce::juce_dsp PUBLIC juce::juce_recommended_config_flags)
 target_compile_options(MusicToMyMouth PRIVATE -Wall -Wextra -Wpedantic)
+
+option(MOUTH_BUILD_VALIDATION "Build the offline vocal validation runner" OFF)
+if(MOUTH_BUILD_VALIDATION)
+    add_executable(MusicToMyMouthValidation Tests/Validation.cpp)
+    target_link_libraries(MusicToMyMouthValidation PRIVATE MusicToMyMouth)
+    target_include_directories(MusicToMyMouthValidation PRIVATE
+        "$<TARGET_PROPERTY:MusicToMyMouth,INCLUDE_DIRECTORIES>")
+    target_compile_definitions(MusicToMyMouthValidation PRIVATE
+        "$<TARGET_PROPERTY:MusicToMyMouth,COMPILE_DEFINITIONS>")
+    target_compile_options(MusicToMyMouthValidation PRIVATE -Wall -Wextra -Wpedantic)
+endif()

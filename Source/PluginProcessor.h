@@ -10,6 +10,7 @@ public:
     void releaseResources() override {}
     bool isBusesLayoutSupported(const BusesLayout&) const override;
     void processBlock(juce::AudioBuffer<float>&,juce::MidiBuffer&) override;
+    void processBlockBypassed(juce::AudioBuffer<float>&,juce::MidiBuffer&) override;
     juce::AudioProcessorEditor* createEditor() override;
     bool hasEditor() const override {return true;}
     const juce::String getName() const override {return "MusicToMyMouth";}
@@ -35,16 +36,17 @@ public:
     std::atomic<float> inputLevel{0},outputLevel{0};
     std::atomic<bool> hostTimelineAvailable{false};
 private:
-    void processSection(juce::AudioBuffer<float>&,double,bool,double);
+    void processAudio(juce::AudioBuffer<float>&,bool bypassed);
+    void processSection(juce::AudioBuffer<float>&,double,bool,double,bool bypassed);
     juce::ValueTree soundState();
     bool applySoundState(const juce::ValueTree&);
     mouth::VocalChain chain;
-    juce::AudioBuffer<float> dryDelay,dryScratch;
+    juce::AudioBuffer<float> dryDelay,dryScratch,bypassDelay,bypassScratch;
     std::unique_ptr<bool[]> manualMask;
     juce::SmoothedValue<float> inputGain,outputGain,mix;
     std::atomic<uint32_t> order{mouth::VocalChain::defaultOrder};
     std::atomic<int> currentPreset{0};
-    int dryCursor=0,blockCapacity=512;
+    int dryCursor=0,bypassCursor=0,blockCapacity=512;
     double rate=48000;
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(MusicToMyMouthProcessor)
 };

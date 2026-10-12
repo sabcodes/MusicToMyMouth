@@ -6,13 +6,16 @@ void MusicToMyMouthProcessor::prepareToPlay(double sr,int maxBlock) {
     rate=sr;blockCapacity=std::max(512,maxBlock);int channels=getTotalNumInputChannels();
     pitch.prepare(sr,channels);chain.prepare(sr,blockCapacity,channels);capture.prepare(sr,channels);
     setLatencySamples(pitch.latency()+chain.latency());
-    dryDelay.setSize(channels,getLatencySamples()+1);dryDelay.clear();dryScratch.setSize(channels,blockCapacity);dryCursor=0;manualMask=std::make_unique<bool[]>(size_t(blockCapacity));
+    dryDelay.setSize(channels,getLatencySamples()+1);dryDelay.clear();dryScratch.setSize(channels,blockCapacity);dryCursor=0;
+    bypassDelay.setSize(channels,getLatencySamples()+1);bypassDelay.clear();bypassScratch.setSize(channels,blockCapacity);bypassCursor=0;manualMask=std::make_unique<bool[]>(size_t(blockCapacity));
     inputGain.reset(sr,.02);outputGain.reset(sr,.02);mix.reset(sr,.02);
     inputGain.setCurrentAndTargetValue(juce::Decibels::decibelsToGain(mouth::value(parameters,"input")));
     outputGain.setCurrentAndTargetValue(juce::Decibels::decibelsToGain(mouth::value(parameters,"output")));
     mix.setCurrentAndTargetValue(mouth::value(parameters,"mix")*.01f);
 }
-void MusicToMyMouthProcessor::processBlock(juce::AudioBuffer<float>& b,juce::MidiBuffer&) {
+void MusicToMyMouthProcessor::processBlock(juce::AudioBuffer<float>& b,juce::MidiBuffer&) {processAudio(b,false);}
+void MusicToMyMouthProcessor::processBlockBypassed(juce::AudioBuffer<float>& b,juce::MidiBuffer&) {processAudio(b,true);}
+void MusicToMyMouthProcessor::processAudio(juce::AudioBuffer<float>& b,bool bypassed) {
     juce::ScopedNoDenormals noDenormals;
     if(!manualMask){b.clear();return;}
     bool playing=false,valid=false;double seconds=0,bpm=120;
@@ -28,11 +31,20 @@ void MusicToMyMouthProcessor::processBlock(juce::AudioBuffer<float>& b,juce::Mid
     for(int offset=0;offset<b.getNumSamples();offset+=blockCapacity) {
         int count=std::min(blockCapacity,b.getNumSamples()-offset);
         juce::AudioBuffer<float> view(b.getArrayOfWritePointers(),b.getNumChannels(),offset,count);
-        processSection(view,seconds+offset/rate,valid&&playing,bpm);
+        processSection(view,seconds+offset/rate,valid&&playing,bpm,bypassed);
     }
     for(int ch=0;ch<b.getNumChannels();++ch)out=std::max(out,b.getMagnitude(ch,0,b.getNumSamples()));outputLevel=out;
 }
-void MusicToMyMouthProcessor::processSection(juce::AudioBuffer<float>& b,double seconds,bool timeline,double bpm) {
+void MusicToMyMouthProcessor::processSection(juce::AudioBuffer<float>& b,double seconds,bool timeline,double bpm,bool bypassed) {
+    // Always warm the unprocessed delay, so host bypass has the same timing and
+    // ignores sound settings without replaying stale engine buffers on return.
+    for(int i=0;i<b.getNumSamples();++i) {
+        for(int ch=0;ch<b.getNumChannels();++ch) {
+            bypassDelay.setSample(ch,bypassCursor,b.getSample(ch,i));
+            bypassScratch.setSample(ch,i,bypassDelay.getSample(ch,(bypassCursor+1)%bypassDelay.getNumSamples()));
+        }
+        bypassCursor=(bypassCursor+1)%bypassDelay.getNumSamples();
+    }
     capture.replace(b,manualMask.get(),seconds,timeline&&mouth::value(parameters,"editedOn")>.5f,rate);
     inputGain.setTargetValue(juce::Decibels::decibelsToGain(mouth::value(parameters,"input")));
     outputGain.setTargetValue(juce::Decibels::decibelsToGain(mouth::value(parameters,"output")));
@@ -48,6 +60,7 @@ void MusicToMyMouthProcessor::processSection(juce::AudioBuffer<float>& b,double 
         float blend=mix.getNextValue(),g=outputGain.getNextValue();
         for(int ch=0;ch<b.getNumChannels();++ch){float x=(b.getSample(ch,i)*blend+dryScratch.getSample(ch,i)*(1-blend))*g;b.setSample(ch,i,std::isfinite(x)?x:0.f);}
     }
+    if(bypassed)for(int ch=0;ch<b.getNumChannels();++ch)b.copyFrom(ch,0,bypassScratch,ch,0,b.getNumSamples());
 }
 void MusicToMyMouthProcessor::setParameterValue(const juce::String& id,float raw) {if(auto* p=parameters.getParameter(id)){p->beginChangeGesture();p->setValueNotifyingHost(p->convertTo0to1(raw));p->endChangeGesture();}}
 void MusicToMyMouthProcessor::setCurrentProgram(int index) {

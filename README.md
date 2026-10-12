@@ -6,7 +6,7 @@ A dedicated native macOS Audio Unit vocal effect for personal use in Logic Pro. 
 
 The first AU implementation is built for Apple Silicon. It includes automatic pitch/formant processing, eight reorderable effect modules, 12 factory sounds, user sound presets, host parameters, and a Capture editor for per-note pitch and timing changes. Project state embeds captured audio and note edits.
 
-This is a **development build**, with production quality still the goal. Compilation has succeeded; Logic playback, project recall, pitch accuracy, latency alignment, automation transitions, CPU behavior, and listening comparisons have not yet been validated. See [SPEC.md](SPEC.md), [architecture](docs/ARCHITECTURE.md), and [milestone notes](docs/MILESTONES.md).
+This is a **development build**, with production quality still the goal. Apple AU validation and automated vocal/DSP checks have passed. Direct Logic UI playback and listening comparisons remain outstanding; see [vocal validation](docs/VOCAL-VALIDATION.md) for the tested scope and measurements. See [SPEC.md](SPEC.md), [architecture](docs/ARCHITECTURE.md), and [milestone notes](docs/MILESTONES.md).
 
 ## Use in Logic
 
@@ -31,6 +31,17 @@ cmake -S . -B build -DCMAKE_BUILD_TYPE=Release -DCMAKE_OSX_ARCHITECTURES=arm64
 cmake --build build --config Release -j 6
 ./scripts/install-au.sh
 ```
+
+To run the authorized vocal checks on another local stem:
+
+```sh
+cmake -S . -B build -DCMAKE_BUILD_TYPE=Release -DCMAKE_OSX_ARCHITECTURES=arm64 -DMOUTH_BUILD_VALIDATION=ON
+cmake --build build --target MusicToMyMouthValidation MusicToMyMouth_AU -j 6
+./scripts/install-au.sh
+./scripts/validate-vocals.sh /absolute/path/to/vocals.mp3 --full
+```
+
+The runner tests the installed AU as well as its offline processor. Audio and result files stay inside ignored build folders. `--full` adds complete-stem checks for the natural lead and hard-tune sounds; all factory sounds use a vocal-rich excerpt. This requires ffmpeg.
 
 The default build downloads JUCE at a pinned commit and Rubber Band 4.0.0 with a pinned archive checksum. `-DJUCE_SOURCE_DIR=/absolute/path/to/JUCE` is an optional local dependency override. Build outputs stay in this repository's ignored `build/` directory. Installation copies only `MusicToMyMouth.component` into the user's AU Components folder and signs it locally. Reopen Logic after installation.
 
