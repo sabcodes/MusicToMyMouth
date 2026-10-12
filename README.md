@@ -8,6 +8,8 @@ The first AU implementation is built for Apple Silicon. It includes automatic pi
 
 This is a **development build**, with production quality still the goal. Apple AU validation and automated vocal/DSP checks have passed. Direct Logic UI playback and listening comparisons remain outstanding; see [vocal validation](docs/VOCAL-VALIDATION.md) for the tested scope and measurements. See [SPEC.md](SPEC.md), [architecture](docs/ARCHITECTURE.md), and [milestone notes](docs/MILESTONES.md).
 
+The editor-open crash reported in Logic has been fixed and the rebuilt AU installed. Native Cocoa editor/audio lifecycle checks pass; owner retesting in Logic is pending. See [editor crash fix](docs/LOGIC-EDITOR-CRASH.md).
+
 The owner handles Logic UI and listening tests. This development workflow uses local offline tests and a native AU test host. For the investigation of the initially weak listening previews, see [preview contrast](docs/PREVIEW-CONTRAST.md).
 
 ## Use in Logic
@@ -41,6 +43,14 @@ cmake -S . -B build -DCMAKE_BUILD_TYPE=Release -DCMAKE_OSX_ARCHITECTURES=arm64 -
 cmake --build build --target MusicToMyMouthValidation MusicToMyMouth_AU -j 6
 ./scripts/install-au.sh
 ./scripts/validate-vocals.sh /absolute/path/to/vocals.mp3 --full
+```
+
+Editor lifecycle regressions can be run separately (the native host deliberately does not link JUCE):
+
+```sh
+cmake --build build --target MusicToMyMouthEditorValidation MusicToMyMouthNativeEditorValidation -j 6
+./build/MusicToMyMouthEditorValidation
+./build/MusicToMyMouthNativeEditorValidation
 ```
 
 The runner tests the installed AU as well as its offline processor. Audio and result files stay inside ignored build folders. `--full` adds complete-stem checks for the natural lead and hard-tune sounds; all factory sounds use a vocal-rich excerpt. This requires ffmpeg.

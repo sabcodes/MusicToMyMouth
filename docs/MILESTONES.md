@@ -36,3 +36,7 @@ This milestone provides a runnable development artifact and a foundation for qua
 Tested the owner's Too Hotty vocal stem after testing was explicitly authorized. Added the optional offline validation runner, native AU test host, and reproducible local validation script. See [VOCAL-VALIDATION.md](VOCAL-VALIDATION.md) for scope, measurements, fixes, and outstanding Logic/listening checks. The recorded tests supersede the unvalidated items covered by that report; the original first-build notes above remain historical.
 
 The installed AU was rebuilt and locally signed. Major changes are buffered R3 streaming, host bypass delay preservation, and raw-difference YIN period refinement. Stem audio, captured media, listening clips, and generated machine reports stay in ignored local folders.
+
+## Logic editor initialization fix
+
+Fixed the editor constructor's synchronous resize before module/piano-roll construction. Reproduced both the original linked editor and installed Cocoa editor crashes, rebuilt and installed the corrected AU, and added separate direct editor and independent native Cocoa host regressions. Apple AU validation, native editor/audio checks in mono/stereo at 44.1/48 kHz, and 72 existing vocal/DSP checks pass. See [LOGIC-EDITOR-CRASH.md](LOGIC-EDITOR-CRASH.md). Owner Logic retesting and feedback are the next step.

@@ -52,7 +52,7 @@ struct MusicToMyMouthEditor::PianoRoll : juce::Component {
 void MusicToMyMouthEditor::addControl(juce::Component& page,const char* id,std::vector<std::unique_ptr<Control>>& list) {auto c=std::make_unique<Control>(processor,id);page.addAndMakeVisible(*c);list.push_back(std::move(c));}
 void MusicToMyMouthEditor::addToggle(juce::Component& page,juce::ToggleButton& button,const char* id,const juce::String& name) {button.setButtonText(name);page.addAndMakeVisible(button);buttons.push_back(std::make_unique<juce::AudioProcessorValueTreeState::ButtonAttachment>(processor.parameters,id,button));}
 MusicToMyMouthEditor::MusicToMyMouthEditor(MusicToMyMouthProcessor& p):AudioProcessorEditor(p),processor(p),theme(std::make_unique<Theme>()) {
-    setLookAndFeel(theme.get());setSize(1120,800);setResizable(true,true);setResizeLimits(960,720,1440,1100);
+    setLookAndFeel(theme.get());
     addAndMakeVisible(tabs);tabs.addTab("TUNE",background,&tunePage,false);tabs.addTab("VOCAL CHAIN",background,&rackPage,false);tabs.addTab("CAPTURE & EDIT",background,&editPage,false);
     addAndMakeVisible(presets);presets.addItemList([&]{juce::StringArray names;for(auto& preset:mouth::factoryPresets())names.add(preset.name);return names;}(),1);presets.setSelectedId(p.getCurrentProgram()+1,juce::dontSendNotification);presets.onChange=[this]{processor.setCurrentProgram(presets.getSelectedId()-1);};
     addAndMakeVisible(savePreset);addAndMakeVisible(loadPreset);savePreset.onClick=[this]{presetDialog(true);};loadPreset.onClick=[this]{presetDialog(false);};
@@ -69,6 +69,8 @@ MusicToMyMouthEditor::MusicToMyMouthEditor(MusicToMyMouthProcessor& p):AudioProc
     piano=std::make_unique<PianoRoll>(*this);editPage.addAndMakeVisible(noteViewport);noteViewport.setViewedComponent(piano.get(),false);noteViewport.setScrollBarsShown(false,true);
     auto setup=[&](juce::Slider& s,juce::Label& l,const juce::String& name,double min,double max,double interval,const juce::String& suffix){s.setRange(min,max,interval);s.setSliderStyle(juce::Slider::LinearHorizontal);s.setTextBoxStyle(juce::Slider::TextBoxRight,false,90,24);s.setTextValueSuffix(suffix);editPage.addAndMakeVisible(s);label(l,name);editPage.addAndMakeVisible(l);};
     setup(noteShift,shiftLabel,"Pitch shift",-12,12,.01," st");setup(noteOffset,offsetLabel,"Start offset",-2000,2000,1," ms");setup(noteLength,lengthLabel,"Duration",50,200,.1," %");setup(noteCorrection,correctionLabel,"Snap toward selected scale",0,100,.1," %");setup(zoom,zoomLabel,"Timeline zoom",20,400,1," px/s");zoom.setValue(90,juce::dontSendNotification);zoom.onValueChange=[this]{resized();piano->repaint();};
+    // JUCE calls resized() synchronously here; create every layout child first.
+    setResizable(true,true);setResizeLimits(960,720,1440,1100);setSize(1120,800);
     startTimerHz(12);timerCallback();
 }
 MusicToMyMouthEditor::~MusicToMyMouthEditor() {stopTimer();noteViewport.setViewedComponent(nullptr,false);rackViewport.setViewedComponent(nullptr,false);setLookAndFeel(nullptr);}

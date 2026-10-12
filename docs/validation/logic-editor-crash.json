@@ -1,0 +1,56 @@
+{
+  "date": "2026-10-11",
+  "originalLinkedEditorExitCode": 139,
+  "originalInstalledCocoaEditorExitCode": 139,
+  "fixedDirectEditor": {
+    "pass": true,
+    "cycles": 3,
+    "tabs": 3,
+    "sizes": [
+      [
+        960,
+        720
+      ],
+      [
+        1440,
+        1100
+      ],
+      [
+        1120,
+        800
+      ]
+    ]
+  },
+  "fixedNativeEditor": {
+    "host": "Cocoa/Core Audio, no JUCE linked",
+    "pass": true,
+    "opensPerFormat": 3,
+    "renderSecondsPerFormat": 2,
+    "formats": [
+      {
+        "sampleRate": 44100,
+        "channels": 1,
+        "rms": 0.135187
+      },
+      {
+        "sampleRate": 44100,
+        "channels": 2,
+        "rms": 0.140543
+      },
+      {
+        "sampleRate": 48000,
+        "channels": 1,
+        "rms": 0.13495
+      },
+      {
+        "sampleRate": 48000,
+        "channels": 2,
+        "rms": 0.14052
+      }
+    ]
+  },
+  "auval": "succeeded",
+  "vocalDSPChecks": 72,
+  "vocalDSPFailures": 0,
+  "logicOwnerRetest": "pending"
+}
