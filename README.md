@@ -8,6 +8,8 @@ The first AU implementation is built for Apple Silicon. It includes automatic pi
 
 This is a **development build**, with production quality still the goal. Apple AU validation and automated vocal/DSP checks have passed. Direct Logic UI playback and listening comparisons remain outstanding; see [vocal validation](docs/VOCAL-VALIDATION.md) for the tested scope and measurements. See [SPEC.md](SPEC.md), [architecture](docs/ARCHITECTURE.md), and [milestone notes](docs/MILESTONES.md).
 
+The owner handles Logic UI and listening tests. This development workflow uses local offline tests and a native AU test host. For the investigation of the initially weak listening previews, see [preview contrast](docs/PREVIEW-CONTRAST.md).
+
 ## Use in Logic
 
 1. Import a clean isolated vocal stem onto a mono or stereo audio track.

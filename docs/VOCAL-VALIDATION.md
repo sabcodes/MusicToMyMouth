@@ -54,6 +54,6 @@ They use the same 78–90-second excerpt, with reported latency trimmed. They ha
 
 ## Remaining limits
 
-Direct Logic UI playback, project reopening in Logic, and Logic offline bounce could not be exercised because computer-control permissions were not granted. AU validation and native AU rendering do not replace those host-specific checks.
+The owner has chosen to perform Logic UI playback, project reopening, and Logic offline bounce personally. This workflow uses offline processing and a native AU test host; Logic access is not part of it. Those owner-run checks remain outstanding.
 
 The numerical tests establish the behaviors listed above. They do not establish that the result sounds better, that detected note boundaries are all correct, or that this processor replaces industry tools. Real-vocal pitch ground truth, artifact listening, automation/order transitions, tempo/region edits, and comparative listening remain outstanding. This is still a development build.

@@ -1,0 +1,111 @@
+{
+  "oldStartSeconds": 78,
+  "newStartSeconds": 0.847528344671202,
+  "old": [
+    {
+      "mode": "unity",
+      "voicedFramesPercent": 24.782608695652176,
+      "voicedEnergyPercent": 32.27971703105041,
+      "energyWithCorrectionOver10CentsPercent": 0.0,
+      "rmsCorrectionCents": 0.0
+    },
+    {
+      "mode": "natural",
+      "voicedFramesPercent": 24.782608695652176,
+      "voicedEnergyPercent": 32.27971703105041,
+      "energyWithCorrectionOver10CentsPercent": 0.0,
+      "rmsCorrectionCents": 0.857627081753287
+    },
+    {
+      "mode": "hard-only",
+      "voicedFramesPercent": 24.782608695652176,
+      "voicedEnergyPercent": 32.27971703105041,
+      "energyWithCorrectionOver10CentsPercent": 12.775904945424966,
+      "rmsCorrectionCents": 9.110090024082472
+    },
+    {
+      "mode": "effects-only",
+      "voicedFramesPercent": 24.782608695652176,
+      "voicedEnergyPercent": 32.27971703105041,
+      "energyWithCorrectionOver10CentsPercent": 0.0,
+      "rmsCorrectionCents": 0.0
+    },
+    {
+      "mode": "hard-full",
+      "voicedFramesPercent": 24.782608695652176,
+      "voicedEnergyPercent": 32.27971703105041,
+      "energyWithCorrectionOver10CentsPercent": 12.775904945424966,
+      "rmsCorrectionCents": 9.110090024082472
+    },
+    {
+      "mode": "deep-formant",
+      "voicedFramesPercent": 24.782608695652176,
+      "voicedEnergyPercent": 32.27971703105041,
+      "energyWithCorrectionOver10CentsPercent": 12.775904945424966,
+      "rmsCorrectionCents": 9.110090024082472
+    },
+    {
+      "mode": "octave-up",
+      "voicedFramesPercent": 24.782608695652176,
+      "voicedEnergyPercent": 32.27971703105041,
+      "energyWithCorrectionOver10CentsPercent": 0.0,
+      "rmsCorrectionCents": 0.0
+    }
+  ],
+  "new": [
+    {
+      "mode": "unity",
+      "voicedFramesPercent": 62.31884057971015,
+      "voicedEnergyPercent": 96.06634721309524,
+      "energyWithCorrectionOver10CentsPercent": 0.0,
+      "rmsCorrectionCents": 0.0
+    },
+    {
+      "mode": "natural",
+      "voicedFramesPercent": 62.31884057971015,
+      "voicedEnergyPercent": 96.06634721309524,
+      "energyWithCorrectionOver10CentsPercent": 19.399893681416252,
+      "rmsCorrectionCents": 7.776193912218214
+    },
+    {
+      "mode": "hard-only",
+      "voicedFramesPercent": 62.31884057971015,
+      "voicedEnergyPercent": 96.06634721309524,
+      "energyWithCorrectionOver10CentsPercent": 93.81554482376804,
+      "rmsCorrectionCents": 45.06456681982044
+    },
+    {
+      "mode": "effects-only",
+      "voicedFramesPercent": 62.31884057971015,
+      "voicedEnergyPercent": 96.06634721309524,
+      "energyWithCorrectionOver10CentsPercent": 0.0,
+      "rmsCorrectionCents": 0.0
+    },
+    {
+      "mode": "hard-full",
+      "voicedFramesPercent": 62.31884057971015,
+      "voicedEnergyPercent": 96.06634721309524,
+      "energyWithCorrectionOver10CentsPercent": 93.81554482376804,
+      "rmsCorrectionCents": 45.06456681982044
+    },
+    {
+      "mode": "deep-formant",
+      "voicedFramesPercent": 62.31884057971015,
+      "voicedEnergyPercent": 96.06634721309524,
+      "energyWithCorrectionOver10CentsPercent": 93.81554482376804,
+      "rmsCorrectionCents": 45.06456681982044
+    },
+    {
+      "mode": "octave-up",
+      "voicedFramesPercent": 62.31884057971015,
+      "voicedEnergyPercent": 96.06634721309524,
+      "energyWithCorrectionOver10CentsPercent": 0.0,
+      "rmsCorrectionCents": 0.0
+    }
+  ],
+  "selectionCheck": "old fails; newly selected section passes",
+  "criteria": {
+    "minimumCorrectionRmsCents": 25,
+    "minimumEnergyCorrectedOver10CentsPercent": 50
+  }
+}
