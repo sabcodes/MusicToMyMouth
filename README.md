@@ -1,29 +1,43 @@
 # MusicToMyMouth
 
-A dedicated macOS Audio Unit vocal processor for Logic Pro, developed for personal use with production quality as the goal.
+A dedicated native macOS Audio Unit vocal effect for personal use in Logic Pro. It processes clean, isolated prerecorded vocals and downloaded stems.
 
-MusicToMyMouth processes clean, isolated, prerecorded vocal tracks. It combines automatic pitch correction, manual pitch and timing editing, a configurable vocal effect chain, and factory and user presets.
+## Current milestone
 
-## Project status
+The first AU implementation is built for Apple Silicon. It includes automatic pitch/formant processing, eight reorderable effect modules, 12 factory sounds, user sound presets, host parameters, and a Capture editor for per-note pitch and timing changes. Project state embeds captured audio and note edits.
 
-The first milestone records the agreed product specification. Plugin implementation has not started. See [SPEC.md](SPEC.md) for scope, research sources, and the approved native Logic Capture workflow.
+This is a **development build**, with production quality still the goal. Compilation has succeeded; Logic playback, project recall, pitch accuracy, latency alignment, automation transitions, CPU behavior, and listening comparisons have not yet been validated. See [SPEC.md](SPEC.md), [architecture](docs/ARCHITECTURE.md), and [milestone notes](docs/MILESTONES.md).
 
-## Planned capabilities
+## Use in Logic
 
-- Manually selected key and scale, natural-to-robotic pitch character, independent correction strength and retune speed.
-- An advanced editor for individual note pitch and timing.
-- Reorderable and bypassable EQ, compression, de-essing, gate, saturation, reverb, tempo-synced delay, formant, and creative effects.
-- Preset families for natural polished leads, hard tuning, robotic/formant effects, and wide vocals with delay and reverb.
-- DAW automation, project state recall, and user preset saving.
+1. Import a clean isolated vocal stem onto a mono or stereo audio track.
+2. Insert **Audio FX → Audio Units → Sabarno Islam → MusicToMyMouth**.
+3. Choose the song key/scale and a sound. Tune controls range from natural correction to fast hard tuning; transpose and formant controls are independent.
+4. Open **Vocal Chain** to adjust, bypass, or move EQ, compression, de-essing, gate, saturation, reverb, tempo-synced delay, and modulation.
+5. For manual edits, open **Capture & Edit**, arm Capture, and play the section once. Press **Finish**, or stop Logic. Select a detected note, set pitch/start/duration/correction, and press **Apply note edit**. Replay that timeline section to hear it.
 
-Harmonies and doubling are backlog items. Comping and audio cleanup are handled in other tools.
+Downloaded stems work through this playback transfer. Logic runs natively; ARA and Rosetta are not required. Capture is limited to one contiguous take per instance, up to three minutes or 128 MiB of raw audio. Loops or seeks end the capture. Finish capture/analysis before saving the project. Moving, replacing, or time-stretching the Logic source region requires recapture. **Play edited Capture** switches between the captured take and current incoming track audio; automatic tuning still applies to untouched notes.
 
-## Development milestones
+Sound preset files (`.mtmm`) include effect settings and module order. They preserve the current song key/scale and exclude captured audio. Logic project saves include key/scale, effect settings, order, Capture media, and note edits. Embedded media increases project size. Undo keeps up to 20 note edits and shares the original media.
 
-Major milestones must be committed and pushed to the GitHub repository after the appropriate checks. Commit messages should identify the completed capability, and milestone notes should describe validation and any remaining limitations. Do not present unverified sound quality as established.
+Harmonies and doubling are backlog items. Comping and audio cleanup are handled elsewhere.
 
-Planned milestones include the AU host foundation, automatic tuning, configurable vocal effects, presets and controls, manual note editing, and Logic integration and audio quality validation. The editor uses Capture: arm it and play the vocal section once in native Logic, then edit pitch and timing. Downloaded vocal stems are supported.
+## Build and install
 
-## Project boundaries
+Requires macOS, CMake 3.24+, Apple command line developer tools, and network access for pinned dependencies.
 
-This project has its own source tree, build outputs, plugin identity, and AU bundle. SerumSynth is a separate plugin. Existing SerumSynth and VocalSuiteX directories are outside this repository.
+```sh
+cmake -S . -B build -DCMAKE_BUILD_TYPE=Release -DCMAKE_OSX_ARCHITECTURES=arm64
+cmake --build build --config Release -j 6
+./scripts/install-au.sh
+```
+
+The default build downloads JUCE at a pinned commit and Rubber Band 4.0.0 with a pinned archive checksum. `-DJUCE_SOURCE_DIR=/absolute/path/to/JUCE` is an optional local dependency override. Build outputs stay in this repository's ignored `build/` directory. Installation copies only `MusicToMyMouth.component` into the user's AU Components folder and signs it locally. Reopen Logic after installation.
+
+## Project boundaries and milestone commits
+
+Source folder: `/Users/sabarnoislam/MusicToMyMouth`.
+
+Private repository: https://github.com/sabcodes/MusicToMyMouth
+
+SerumSynth and VocalSuiteX are separate projects and are not modified. Major milestones are committed and pushed, with capability, build evidence, and remaining limitations recorded in the milestone notes.
